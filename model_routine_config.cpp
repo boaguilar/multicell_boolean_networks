@@ -86,8 +86,8 @@ void ModelRoutine::updateTimeStepInfo( TimeStepInfo& timeStepInfo ) {
 void ModelRoutine::updateSyncMethod( sync_method_e& mechIntrctSyncMethod, sync_method_e& updateIfGridVarSyncMethod/* dummy if both callUpdateIfGridVarPreStateAndGridStep and callUpdateIfGridVarPostStateAndGridStep are set to false in ModelRoutine::updateOptModelRoutineCallInfo */ ) {
 	/* MODEL START */
 
-        mechIntrctSyncMethod = SYNC_METHOD_PER_VAR;
-        updateIfGridVarSyncMethod = SYNC_METHOD_PER_VAR;
+        mechIntrctSyncMethod = SYNC_METHOD_PER_ATTR;
+        updateIfGridVarSyncMethod = SYNC_METHOD_PER_ATTR;
 
 	/* MODEL END */
 
@@ -146,7 +146,6 @@ void ModelRoutine::updateSpAgentInfo( Vector<SpAgentInfo>& v_spAgentInfo ) {/* s
                 SpAgentInfo info;
 
                 info.dMax = IF_GRID_SPACING;
-                info.hasBool = false;
                 info.numBoolVars = 0;
                 info.numStateModelReals = 0; // comeback later
                 info.numStateModelInts = MaxNumGenes  ; // !!!!!!!!! needs change

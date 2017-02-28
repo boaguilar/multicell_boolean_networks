@@ -39,7 +39,7 @@ x(, y, or z): simulation grid size in the x(, y, or z) direction, x(, y, or z) %
 	start_x(, y, or z): output box offset in the x(, y, or z) direction, must be an integer multiple of refine_ratio^(number of AMR levels - 1), required, integer, [1,)
 	size_x(, y, or z): output box size in the x(, y, or z) direction, must be an integer multiple of refine_ratio^(number of AMR levels - 1), required, integer, [1,)
 -->
-<output path="/home/baguilar/biocellion-user/biocellion_boolean_networks/output" interval="1" particle="pvtp" grid="vtm" start_x="0" start_y="0" start_z="0" size_x="12" size_y="8" size_z="4"/>
+<output path="/home/baguilar/biocellion-user/biocellion_boolean_networks/output" interval="1" particle="pvtp" grid="vthb" start_x="0" start_y="0" start_z="0" size_x="12" size_y="8" size_z="4"/>
 
 </required>
 

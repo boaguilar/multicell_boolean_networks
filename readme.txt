@@ -1,5 +1,5 @@
 The model requires 5 parameters as before. 
-Two setup two BNs one has to write the two nv vectors in a single file(*.nv). each BN will ocupy a line.
+To setup two BNs, one has to write the two nv vectors in a single file(*.nv). Each BN will occupy a line.
 Similarly the varf of each BN should be placed one after another in a single file (*.varf)  
 
 
