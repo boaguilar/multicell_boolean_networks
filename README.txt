@@ -6,9 +6,9 @@ Description
 Perform simulations of a multicellular system in which each cell is characterized 
 by a Boolean Network, and cell-cell communication is mediated by a diffusion of 
 cytokines secreted by cells. Cells read the cytokines concentration to determine 
-the Boolean state of the corresponding cytokine receptors.  From user defined
-initial Boolean states of cells and model parameters the simulations outputs the 
-average concentration of every gene for each of the cell types of PDAC model.
+the Boolean state of the corresponding cytokine receptors. From user defined
+initial tates of cells and other model parameters, the simulations output the 
+average concentration of every gene for each of the cell types of a multicellular model.
 
 More details:
 B. Aguilar, D.L. Gibbs, D.L. Reiss, M. McConnell, S.A. Danziger, A. Dervan,
@@ -21,7 +21,7 @@ Requeriments
 ============
 1) Biocellion1.2. You can download Biocellion from https://biocellion.com and read 
    installation steps from the Manual. 
-   Biocellion1.2 binary is included in the "biocellion1.2".
+   Biocellion1.2 binary is included in the "ThirdParty/biocellion1.2" directory.
 2) Python 3. Used to generate the files necessary to run simulations.
 3) Threading Building Blocks library ( http://threadingbuildingblocks.org ).
    There is one version of this library in the "ThirdParty" direactory.
@@ -33,8 +33,9 @@ The multicellular Boolean network model is implemented in Biocelliion1.2. To com
 the model follow the following steps: 
 
 1) Update the variable name "BIOCELLION_ROOT" in the file "Makefile.model" in the
-   "BiocellionModel" directory,  to the "biocellion1.2" directory in your computer.
-2) Go to the directory "BiocellionModel" then do "make clean"  and "make".
+   "BiocellionModel" directory,  to the "ThirdParty/biocellion1.2" directory 
+   in your computer.
+2) Go to the directory "BiocellionModel" then do "make clean" and "make".
 
 Usage
 =====
@@ -64,7 +65,7 @@ The following commands are used two run the implemented models:
    python run_fivecell_pdacsample.py  $SAMPLE_ID 
   
    where $SAMPLE_ID is a number from 0-118 that represents the ID 
-   of the TCGa sample.
+   of the TCGA sample.
 
 
 Description of additional modeling Files 
@@ -95,4 +96,3 @@ Boris Aguilar : boris.aguilar@systemsbiology.org - model building and simulation
 David Gibbs : david.gibbs@systemsbiology.org - methods to integrate TCGA data 
 Alexander Ratushny : aratushny@celgene.com - Project leader
 Ilya Shmulevich : ilya.shmulevich@systemsbiology.org - Project leader
-
