@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<biocellion>
+
+<!--
+Biocellion has three main components.
+1) simulating individual discrete agent (single-particle agent and multi-particle agent) behavior,
+2) simulating mechanical interactions between discrete agent particles, and
+3) simulating interactions among discrete agents (and the surrounding environment) via diffusible molecules (modelled using PDEs).
+
+1) has two sub-components.
+1-1) simulating agent state changes and
+1-2) simulating birth and death of agents
+-->
+
+<!-- required, mandatory simulation configuration parameters, required -->
+<required>
+
+<!-- time_step, set the number of baseline time steps, required
+	num_baseline: number of baseline (to simulate 1-2 and 2) time steps, required, integer, [1,)
+-->
+<time_step num_baseline="4"/>
+<!-- domain, parameters describing the simulation domain
+x(, y, or z): simulation grid size in the x(, y, or z) direction, x(, y, or z) % partition_size must be zero or equal to or larger than max(4 (minimum partition size), refine_ratio^(number of AMR levels - 1) * 2 (minimum box size)), and x(, y, or z) should be an integer multiple of refine_ratio^(number of AMR levels - 1), required, integer, [4,)
+-->
+<domain x="16" y="16" z="16"/>
+<!-- init_data, parameters related to initial cell and grid data, required
+	partition_size: partition size (for parallel processing, 64 is a reasonable value in most cases), partition_size should be an integer multiple of max(4, refine_ratio^(number of AMR levels - 1) * 2 (minimum box size)), required, integer, [1,)
+	src: initial cell and grid data source, set to code to initialize inside the model code, set to file to read from files, required, code|file
+	file_type: valid only when src is set to file. input data file type, set to binary if input data files have the Biocellion binary format (currently only this option is supported), required, binary
+	path: valid only when src is set to file. path to the directory containing input data files, required, text
+-->
+<init_data partition_size="16" src="code"/>
+
+<!-- output, parameters related to output data, required
+	path: path to the directory to dump output data files, required, text
+	interval: output interval (0: turn off, unit: baseline time steps), required, integer, [0,)
+	particle: set to pvtp to output particle data using the parallel VTK unstructed grid format (currently only the pvtp format is supported), required, pvtp
+	grid: set to vtm to output data using the VTK hierarchical box data format (currently only the vtm format is supported), required, vtm
+	start_x(, y, or z): output box offset in the x(, y, or z) direction, must be an integer multiple of refine_ratio^(number of AMR levels - 1), required, integer, [1,)
+	size_x(, y, or z): output box size in the x(, y, or z) direction, must be an integer multiple of refine_ratio^(number of AMR levels - 1), required, integer, [1,)
+-->
+<output path="./output" interval="1" particle="pvtp" grid="vthb" start_x="0" start_y="0" start_z="0" size_x="16" size_y="16" size_z="16"/>
+
+</required>
+
+<!-- optional, optional simulation configuration parameters, optional -->
+<optional>
+
+<!-- model, to set model specific parameters, optional
+	param: saved to Info::modelParam to be used in Model::init(), optional, default="", text
+     1st : gamma  , degradation rate [1/s] 
+     2th : phi_off , concentration of deactivated
+     3th : number of cytokines
+     4th : name of the nv, varf, and tt file  ( Boolean network files)
+     5th : cytokine network file 
+     6th : xyzrt file (x,y,x coordinates plus radius nad type)
+     7th : st   file ( Initial boolean state per cell ) 
+-->
+<model param="0.002 0.00219655 12 ./pccmut_psc_cd2_tam_cd8 ./cytokine_network.txt ./cell_locations_0_0.txt ./boolean_values_0_0.txt"/>
+
+
+<!-- stdout, control standard output, optional
+	path: if set, standard output messages are redirected to the output.log (or output.log.[process_id]) file under the specified path, optional, text
+	verbosity: controls the verbosity of standard output messages (5 for the highest level of verbosity), optional, default=1, [0,5]
+	time_stamp: if set to yes, a time stamp is inserted right before every output message, optional, default=no, yes|no
+-->
+<stdout path="" verbosity="1" time_stamp="yes"/>
+
+<!-- system, parameters related to shared and distributed memory parallelism, optional
+	num_threads: number of threads per MPI process, optional, integer, default=# cores (or hardware threads) in a node, [1,)
+	num_node_groups: number of node groups in a system, optional, integer, default=1, [1,)
+	num_nodes_per_group: number of nodes per node group, optional, default=# MPI processes, [1,)
+	num_sockets_per_node: number of NUMA sockets per node, this information is used for NUMA binding, set to 1 to turn-off NUMA binding, num_node_groups * num_nodes_per_group * num_sockets_per_node should coincide with # MPI processes, optional, default=1, [1,)
+-->
+<system num_node_groups="1" num_nodes_per_group="1" num_sockets_per_node="1" num_threads="16"/>
+
+<!-- super_partition, sets super partition size
+	x(, y, or z): super partition size in the direction of x(, y, or z), a larger value reduces the communication requirement between node groups at the expense of lower parallelism, this number should be an integer multiple of partition_size, optional, default=the smallest integer multiple of partition_size that is equal to or larger than x(, y, or z) (of domain), integer, [1,)
+-->
+<super_partition x="64" y="64" z="64"/>
+
+<!-- interval, controls the frequency of summary report, load balancing, regridding and checkpointing, optional
+	summary: summary report interval (0: turn off, unit: baseline time steps), optional, default=0, integer, [0,)
+	load_balance: load balancing interval (unit: baseline time steps), optional, integer, default=100, [1,)
+	regridding: regridding interval (unit: baseline time steps), regridding should be equal to or smaller than load_balance and regridding should equally divide load_balance, optional, integer, default=100, [1,)
+	checkpoint: checkpoint interval (0: turn off, unit: baseline time steps), optional, default=0, integer, [0,)
+-->
+<interval summary="1" load_balance="0" regridding="10000" checkpoint="1000"/>
+
+<!-- amr, controls adaptive mesh refinement
+	refine_ratio: adaptive mesh refinement ratio between two consecutive levels, optional, default=2, 2|4|8
+    fill_ratio: controls grid efficiency in mesh generation based on model provided tags, large value will generate less filled larger blocks, optional, default=0.5, [0.0,1.0]
+-->
+<amr refine_ratio="2" fill_ratio="0.5"/>
+
+</optional>
+
+</biocellion>
+
