@@ -1,0 +1,69 @@
+# REAL = float or double
+REAL = double
+
+# MPAGENT = yes or no
+MPAGENT = no
+
+# SPAGENT = yes or no
+SPAGENT = yes
+
+# DEBUG = yes or no
+DEBUG = no
+#DEBUG = yes
+
+BIOCELLION_ROOT = /home/boris/multicell_boolean_networks/ThirdParty/biocellion1.2
+
+#CXX = icpc
+CXX = g++
+#AR = xiar #if using icpc
+AR = ar #if using g++
+ifeq ("$(DEBUG)", "yes")
+CXXFLAG = -g -Wall
+else
+#CXXFLAG = -O3 -static -ipo -Wall #if using icpc
+CXXFLAG = -O3 -Wall #if using g++
+endif
+
+#LINKFLAG = -static-intel #if using icpc
+LINKFLAG = #if using g++
+
+CHECK_FLAG = -DENABLE_CHECK=0 #disable run-time check
+#CHECK_FLAG = -DENABLE_CHECK=1 #enable run-time check
+
+# DO NOT CHANGE BELOW THIS LINE
+
+RM = rm -f
+
+CXX_CONFIG_FLAG = -DDIMENSION=3
+
+ifeq ("$(REAL)", "float")
+CXX_CONFIG_FLAG += -DREAL_IS_FLOAT=1
+else
+CXX_CONFIG_FLAG += -DREAL_IS_FLOAT=0
+endif
+
+ifeq ("$(MPAGENT)", "yes")
+CXX_CONFIG_FLAG += -DHAS_MPAGENT=1
+else
+CXX_CONFIG_FLAG += -DHAS_MPAGENT=0
+endif
+
+ifeq ("$(SPAGENT)", "yes")
+CXX_CONFIG_FLAG += -DHAS_SPAGENT=1
+else
+CXX_CONFIG_FLAG += -DHAS_SPAGENT=0
+endif
+
+CXXFLAG += -DTHIS_IS_LIBMODEL=1
+
+CXXFLAG += $(CXX_CONFIG_FLAG)
+
+CXXFLAG += $(CHECK_FLAG)
+
+INCLUDE = -I $(BIOCELLION_ROOT)/include
+
+LIB =
+
+# Local Variables:
+# mode:makefile
+# End:
