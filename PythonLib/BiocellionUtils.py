@@ -10,6 +10,63 @@ from xml.etree.ElementTree import Element, SubElement, Comment
 from xml.dom import minidom
 import csv
 
+
+def CytokineNet_fivecell( OutFile, s_thresholds, ron_pccs, ron_cells ) :
+
+    Ncells = 5
+    Ncues = 16
+
+    ron_pcc_a = [ '1.0' for _ in range(Ncues) ] # 1.0 is the smallest 
+    ron_pcc_a[0] = ron_pccs[0] # VEGF in PCC
+    ron_pcc_a[1] = ron_pccs[1] # EGF in PCC
+    ron_pcc_a[2] = ron_pccs[2] # bFGF in PCC
+    ron_pcc_a[3] = ron_pccs[3] # PDGFBB in PCC
+    ron_pcc_a[4] = ron_pccs[4] # TFGbeta1 in PCC
+    
+    #              0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+    SECRETION = [[30,31,32,33,34,-1,-1,-1,-1,-1,-1,-1,-1,-1, 5,38],#PCC
+                 [24,-1,25,26,27,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],#PSC
+                 [-1,-1,-1,-1,-1,32,31,29,30,-1,-1,-1,-1,-1,-1,-1],#CD4
+                 [-1,-1,-1,-1,30,-1,29,32,-1,31,-1,28,-1,-1,-1,-1],#TAM
+                 [-1,-1,-1,-1,-1,42,41,-1,-1,-1,-1,-1,-1,43,-1,-1]]
+
+
+    RECEPTORS = [[-1, 3,-1,-1,-1], # VEGF 0
+                 [ 2, 4,-1,-1,-1], # EGF  1
+                 [ 3, 5,-1,-1,-1], # bFGF 2
+                 [-1, 6,-1,-1,-1], # PDGFBB 3
+                 [ 4, 7,10,-1,-1], # TGFb1  4
+                 [-1, 2, 9, 2, 3], # IFNgamma 5
+                 [-1,-1, 7, 5,-1], # IL10 6
+                 [-1,-1, 6,-1,-1], # IL6 7
+                 [-1,-1, 8, 4,-1], # IL4 8
+                 [-1, 1,-1,-1,-1], # TNFalpha 9
+                 [-1,-1, 0,-1,-1], # IL23 10
+                 [-1,-1, 2,-1, 2], # IL12 11
+                 [-1,-1, 1,-1, 1], # IL2 12
+                 [39,-1,-1,-1,-1], # TOXIC 13
+                 [-1,-1,-1,-1,-1], # PDL1 14
+                 [-1,-1, 5, 6, 0]] # AG  15
+
+
+    with open(OutFile, "w" ) as f :
+
+        # cytokine , cell , gene , rate
+        for i in range( Ncells ) :
+            for j in range( Ncues ) :
+               if ( RECEPTORS[j][i] > -1 ) : 
+                   f.write('R '+str(j)+' '+str(i)+' '+ str(RECEPTORS[j][i])+' '+s_thresholds[i]+'\n' )
+
+        for i in range( Ncells ) :
+            for j in range( Ncues ) :
+               if ( SECRETION[i][j] > -1 ) :
+                   if ( i == 0 ) :
+                      f.write('S '+str(j)+' '+str(i)+' '+str(SECRETION[i][j])+' '+ron_pcc_a[j]+'\n' )
+                   else : 
+                      f.write('S '+str(j)+' '+str(i)+' '+str(SECRETION[i][j])+' '+ ron_cells[i]+'\n' )
+
+
+
 def NumCellsFromXYZR (  xyzrt_file , typeid ) :
     with open( xyzrt_file, 'r') as f:
        first_line = f.readline()

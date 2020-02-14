@@ -11,7 +11,7 @@ SPAGENT = yes
 DEBUG = no
 #DEBUG = yes
 
-BIOCELLION_ROOT = /home/boris/multicell_boolean_networks/ThirdParty/biocellion1.2
+BIOCELLION_ROOT = /home/boris/GITHUB/multicell_boolean_networks/ThirdParty/biocellion1.2
 
 #CXX = icpc
 CXX = g++
