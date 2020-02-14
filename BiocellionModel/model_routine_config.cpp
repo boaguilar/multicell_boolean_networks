@@ -731,7 +731,8 @@ void ModelRoutine::initGlobal( Vector<U8>& v_globalData ) {
                     rate = ( REAL ) strtod( p_token, NULL );
                     
                     if (( cytokineID >= NUM_CYTOKINES ) || ( cellID >= NUM_BN_NETWORKS ) || ( geneID >= MAX_NUM_NODES ) ) { 
-                         ERROR( "Indexes off limits in cytokine network file" ); 
+                         cout << "cytokine:" << cytokineID << " cell:"<< cellID <<" gene:" << geneID << endl;
+                         ERROR( "Indexes off limits in cytokine network file " ); 
                     }
                     
                     if ( label == "R" )  {

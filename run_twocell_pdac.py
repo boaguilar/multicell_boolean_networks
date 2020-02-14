@@ -17,8 +17,8 @@ SIMULATIONS_DIR= MBN_DIR + "/Models/twocell_pdac/sim_output"
  
 #inputs
 ParamFile =  MBN_DIR + "/Models/twocell_pdac/ParametersLHC_pccmut_psc_Lambda30_set1.txt"
-#PARAM_ID =  '271' # '0' ;   #sys.argv[1]
-PARAM_ID =  sys.argv[1]
+PARAM_ID =  '0'  # Parameter ID ( row in ParamFile )
+#PARAM_ID =  sys.argv[1]
 
 # simultion parameters
 NINSTANCES = 10
